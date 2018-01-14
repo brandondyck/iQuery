@@ -23,7 +23,10 @@ shift s e = do
 
 setV : Event -> JS_IO Int
 setV e = do
-     Just el <- !(query "input#val") `elemAt` 0
+     Just el <- !(query "input#pushVal") `elemAt` 0
+        | Nothing => do
+            alert "no such element 'input#pushVal'"
+            pure 1
      setValue el "wohoo"
      pure 1
 
