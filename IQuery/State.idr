@@ -42,7 +42,7 @@ stateVarExists = do
 
 initStateVar : JS_IO Ptr
 initStateVar =
-  foreign FFI_JS (stateVarName ++ " = {count: 0}") (JS_IO Ptr)
+  foreign FFI_JS ("window." ++ stateVarName ++ " = {count: 0}") (JS_IO Ptr)
 
 getStateVar : JS_IO (Maybe Ptr)
 getStateVar = case !stateVarExists of
