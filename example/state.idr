@@ -27,13 +27,15 @@ setV e = do
      setValue el "wohoo"
      pure 1
 
+tryOnClick : (queryString : String) -> (listener:Event -> JS_IO Int) -> JS_IO ()
+tryOnClick queryString listener= do
+  Just el <- !(query queryString) `elemAt` 0
+    | Nothing => alert ("no such element '" ++ queryString ++ "'")
+  onClick el listener
+
 main : JS_IO ()
 main = do
   queue <- newState (STList STString) Nil
-  Just p <- !(query "input#pushAct") `elemAt` 0
-  onClick p (push queue)
-  Just s <- !(query "input#shiftAct") `elemAt` 0
-  onClick s (shift queue)
-  Just sv <- !(query "input#setVal") `elemAt` 0
-  onClick sv setV
-  pure ()
+  tryOnClick "input#pushAct" (push queue)
+  tryOnClick "input#shiftAct" (shift queue)
+  tryOnClick "input#setVal" setV
